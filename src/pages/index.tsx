@@ -1,62 +1,68 @@
 import type { NextPage } from 'next';
+import 'normalize.css';
+import { useState } from 'react';
+
 import Head from 'next/head';
 
-import Counter from '../features/counter/Counter';
-import styles from '../styles/Home.module.css';
-
 const IndexPage: NextPage = () => {
+  const [values, setValues] = useState({
+    name: '',
+    surname: '',
+    email: '',
+  });
+
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value, name },
+    } = event;
+
+    setValues({
+      ...values,
+      [name]: value,
+    });
+  };
+
   return (
-    <div className={styles.container}>
+    <>
       <Head>
-        <title>Redux Toolkit</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Security Bank | Next.js | Redux | PoC</title>
       </Head>
-      <header className={styles.header}>
-        <img src="/logo.svg" className={styles.logo} alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className={styles.link}
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className={styles.link}
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className={styles.link}
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className={styles.link}
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
+      <header>
+        <nav></nav>
       </header>
-    </div>
+      <main>
+        <form>
+          <div>
+            <label htmlFor="name">Name:</label>
+            <input
+              type="text"
+              id="name"
+              onChange={handleOnChange}
+              name="name"
+            />
+          </div>
+          <div>
+            <label htmlFor="surname">Surname:</label>
+            <input
+              type="text"
+              id="surname"
+              onChange={handleOnChange}
+              name="surname"
+            />
+          </div>
+          <div>
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              onChange={handleOnChange}
+            />
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      </main>
+    </>
   );
 };
 
