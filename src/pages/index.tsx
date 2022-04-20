@@ -1,25 +1,22 @@
 import type { NextPage } from 'next';
 import 'normalize.css';
-import { useState } from 'react';
+
+import { Formik } from 'formik';
+import { object, string } from 'yup';
 
 import Head from 'next/head';
 
+const userSchema = object({
+  name: string().required(),
+  surname: string().required(),
+  email: string().email().required(),
+});
+
 const IndexPage: NextPage = () => {
-  const [values, setValues] = useState({
+  const initialValues = {
     name: '',
     surname: '',
     email: '',
-  });
-
-  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { value, name },
-    } = event;
-
-    setValues({
-      ...values,
-      [name]: value,
-    });
   };
 
   return (
@@ -28,39 +25,74 @@ const IndexPage: NextPage = () => {
         <title>Security Bank | Next.js | Redux | PoC</title>
       </Head>
       <header>
+        <h1>Home</h1>
         <nav></nav>
       </header>
       <main>
-        <form>
-          <div>
-            <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              id="name"
-              onChange={handleOnChange}
-              name="name"
-            />
-          </div>
-          <div>
-            <label htmlFor="surname">Surname:</label>
-            <input
-              type="text"
-              id="surname"
-              onChange={handleOnChange}
-              name="surname"
-            />
-          </div>
-          <div>
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              onChange={handleOnChange}
-            />
-          </div>
-          <button type="submit">Submit</button>
-        </form>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={(values, { setSubmitting }) => {
+            console.log({ values });
+          }}
+          validationSchema={userSchema}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+          }) => (
+            <form onSubmit={handleSubmit}>
+              <div>
+                <label htmlFor="name">Name:</label>
+                <input
+                  type="text"
+                  id="name"
+                  onChange={handleChange}
+                  name="name"
+                  onBlur={handleBlur}
+                  value={values.name}
+                />
+              </div>
+              {errors.name && touched.name && errors.name}
+
+              <div>
+                <label htmlFor="surname">Surname:</label>
+                <input
+                  type="text"
+                  id="surname"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  name="surname"
+                  value={values.surname}
+                />
+
+                {errors.surname && touched.surname && errors.surname}
+              </div>
+
+              <div>
+                <label htmlFor="email">Email:</label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.email}
+                />
+              </div>
+
+              {errors.email && touched.email && errors.email}
+
+              <button type="submit" disabled={isSubmitting}>
+                Submit
+              </button>
+            </form>
+          )}
+        </Formik>
       </main>
     </>
   );
