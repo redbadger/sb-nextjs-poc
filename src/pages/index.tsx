@@ -4,7 +4,10 @@ import 'normalize.css';
 import { Formik } from 'formik';
 import { object, string } from 'yup';
 
+import { selectSession, setSession } from '../features/session/slice';
+
 import Head from 'next/head';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 
 const userSchema = object({
   name: string().required(),
@@ -13,11 +16,8 @@ const userSchema = object({
 });
 
 const IndexPage: NextPage = () => {
-  const initialValues = {
-    name: '',
-    surname: '',
-    email: '',
-  };
+  const dispatch = useAppDispatch();
+  const initialValues = useAppSelector(selectSession);
 
   return (
     <>
@@ -32,7 +32,7 @@ const IndexPage: NextPage = () => {
         <Formik
           initialValues={initialValues}
           onSubmit={(values, { setSubmitting }) => {
-            console.log({ values });
+            dispatch(setSession(values));
           }}
           validationSchema={userSchema}
         >
