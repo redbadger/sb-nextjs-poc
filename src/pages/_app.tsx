@@ -9,7 +9,9 @@ import store, { persistor } from '../app/store';
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
+      {/* @ts-ignore */}
       <PersistGate loading={null} persistor={persistor}>
+        {/* @ts-ignore */}
         <Component {...pageProps} />
       </PersistGate>
     </Provider>

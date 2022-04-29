@@ -1,7 +1,6 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 
-import counterReducer from '../features/counter/counterSlice';
 import sessionReducer from '../features/session/slice';
 
 import { persistStore, persistReducer } from 'redux-persist';
@@ -13,7 +12,6 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  counter: counterReducer,
   session: sessionReducer,
 });
 

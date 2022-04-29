@@ -21,4 +21,3 @@ The idea is to populate the first page with personal data, that would create a u
   yarn dev
   ```
 - Populate the form
--
