@@ -1,10 +1,14 @@
 import type { NextPage } from 'next';
 import 'normalize.css';
-
+import { batch } from 'react-redux';
 import { Formik } from 'formik';
 import { object, string } from 'yup';
 
-import { selectSession, setSession } from '../features/session/slice';
+import {
+  selectSession,
+  setLoginDetails,
+  createSession,
+} from '../features/session/slice';
 
 import Head from 'next/head';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
@@ -17,7 +21,11 @@ const userSchema = object({
 
 const IndexPage: NextPage = () => {
   const dispatch = useAppDispatch();
-  const initialValues = useAppSelector(selectSession);
+  const { name, surname, email } = useAppSelector(selectSession);
+
+  const initialValues = { name, surname, email };
+
+  console.log({ name });
 
   return (
     <>
@@ -32,7 +40,10 @@ const IndexPage: NextPage = () => {
         <Formik
           initialValues={initialValues}
           onSubmit={(values, { setSubmitting }) => {
-            dispatch(setSession(values));
+            batch(() => {
+              dispatch(setLoginDetails(values));
+              dispatch(createSession(values));
+            });
           }}
           validationSchema={userSchema}
         >
@@ -93,6 +104,7 @@ const IndexPage: NextPage = () => {
             </form>
           )}
         </Formik>
+        {Boolean(name) ? <p>{name}</p> : <p>no name</p>}
       </main>
     </>
   );
