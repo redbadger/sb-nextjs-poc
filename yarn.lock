@@ -2121,11 +2121,6 @@ jest@^27.2.0:
     import-local "^3.0.2"
     jest-cli "^27.5.1"
 
-jose-jwe-jws@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/jose-jwe-jws/-/jose-jwe-jws-0.2.2.tgz#c68b99cdacb7bffa774a6672c720243606e53ded"
-  integrity sha512-z3AkKwzGYRaAiroC1ozylHD/J0bsyrL7WZuUIZvbO8gPKYT+MQ+mvZYiiLFIglEWHE07EIA7yjYI6TUdN9YHJw==
-
 jose@^4.8.0:
   version "4.8.0"
   resolved "https://registry.yarnpkg.com/jose/-/jose-4.8.0.tgz#470c4c045f2abc899b924872aecb000c28947288"

@@ -12,6 +12,7 @@ import {
 
 import Head from 'next/head';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { useRouter } from 'next/router';
 
 const userSchema = object({
   name: string().required(),
@@ -21,6 +22,7 @@ const userSchema = object({
 
 const IndexPage: NextPage = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const { name, surname, email, sessionToken } = useAppSelector(selectSession);
 
   const initialValues = { name, surname, email };
@@ -42,6 +44,10 @@ const IndexPage: NextPage = () => {
               dispatch(setLoginDetails(values));
               dispatch(createSession(values));
             });
+
+            if (Boolean(sessionToken)) {
+              router.push('/session-page');
+            }
           }}
           validationSchema={userSchema}
         >
