@@ -39,17 +39,15 @@ const IndexPage: NextPage = () => {
       <main>
         <Formik
           initialValues={initialValues}
-          onSubmit={(values, { setSubmitting }) => {
+          validationSchema={userSchema}
+          onSubmit={(values) => {
             batch(() => {
               dispatch(setLoginDetails(values));
               dispatch(createSession(values));
             });
 
-            if (Boolean(sessionToken)) {
-              router.push('/session-page');
-            }
+            router.push('/session-page', undefined, { shallow: true });
           }}
-          validationSchema={userSchema}
         >
           {({
             values,
