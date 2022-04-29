@@ -1,38 +1,60 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { SignJWT, importPKCS8 } from 'jose';
 
 import type { AppState } from '../../app/store';
+import { privateCertificate, alg } from './shared';
 
 export interface LoginState {
   name: string;
   surname: string;
   email: string;
+  sessionToken: string;
 }
+
+type User = Pick<LoginState, 'name' | 'surname' | 'email'>;
 
 const initialState: LoginState = {
   name: '',
   surname: '',
   email: '',
+  sessionToken: '',
 };
+
+export const createSession = createAsyncThunk(
+  'session/createSession',
+  async (user: User) => {
+    const privateKey = await importPKCS8(privateCertificate, alg);
+
+    return await new SignJWT(user)
+      .setProtectedHeader({ alg })
+      .setIssuedAt()
+      .setExpirationTime('2h')
+      .sign(privateKey);
+  },
+);
 
 export const sessionSlice = createSlice({
   name: 'session',
   initialState,
-  // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
-    setSession: (state, action: PayloadAction<LoginState>) => {
+    setLoginDetails: (state, action: PayloadAction<User>) => {
       const {
         payload: { name, surname, email },
       } = action;
-      state = { ...state, name, surname, email };
+      state.name = name;
+      state.surname = surname;
+      state.email = email;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(createSession.fulfilled, (state, { payload }) => {
+      state.sessionToken = payload;
+    });
   },
 });
 
-export const { setSession } = sessionSlice.actions;
+export const { setLoginDetails } = sessionSlice.actions;
 
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const selectSession = (state: AppState) => state.session;
 
 export default sessionSlice.reducer;

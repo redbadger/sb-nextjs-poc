@@ -1,13 +1,18 @@
 import type { NextPage } from 'next';
 import 'normalize.css';
-
+import { batch } from 'react-redux';
 import { Formik } from 'formik';
 import { object, string } from 'yup';
 
-import { selectSession, setSession } from '../features/session/slice';
+import {
+  selectSession,
+  setLoginDetails,
+  createSession,
+} from '../features/session/slice';
 
 import Head from 'next/head';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { useRouter } from 'next/router';
 
 const userSchema = object({
   name: string().required(),
@@ -17,7 +22,10 @@ const userSchema = object({
 
 const IndexPage: NextPage = () => {
   const dispatch = useAppDispatch();
-  const initialValues = useAppSelector(selectSession);
+  const router = useRouter();
+  const { name, surname, email, sessionToken } = useAppSelector(selectSession);
+
+  const initialValues = { name, surname, email };
 
   return (
     <>
@@ -32,7 +40,14 @@ const IndexPage: NextPage = () => {
         <Formik
           initialValues={initialValues}
           onSubmit={(values, { setSubmitting }) => {
-            dispatch(setSession(values));
+            batch(() => {
+              dispatch(setLoginDetails(values));
+              dispatch(createSession(values));
+            });
+
+            if (Boolean(sessionToken)) {
+              router.push('/session-page');
+            }
           }}
           validationSchema={userSchema}
         >
@@ -93,6 +108,14 @@ const IndexPage: NextPage = () => {
             </form>
           )}
         </Formik>
+        {Boolean(sessionToken) ? (
+          <>
+            <h2>Session Token</h2>
+            <p>
+              <code>{sessionToken}</code>
+            </p>
+          </>
+        ) : null}
       </main>
     </>
   );
