@@ -21,11 +21,9 @@ const userSchema = object({
 
 const IndexPage: NextPage = () => {
   const dispatch = useAppDispatch();
-  const { name, surname, email } = useAppSelector(selectSession);
+  const { name, surname, email, sessionToken } = useAppSelector(selectSession);
 
   const initialValues = { name, surname, email };
-
-  console.log({ name });
 
   return (
     <>
@@ -104,7 +102,14 @@ const IndexPage: NextPage = () => {
             </form>
           )}
         </Formik>
-        {Boolean(name) ? <p>{name}</p> : <p>no name</p>}
+        {Boolean(sessionToken) ? (
+          <>
+            <h2>Session Token</h2>
+            <p>
+              <code>{sessionToken}</code>
+            </p>
+          </>
+        ) : null}
       </main>
     </>
   );
