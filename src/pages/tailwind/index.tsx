@@ -1,32 +1,34 @@
-import React from "react"
-import { Formik } from "formik"
-import * as yup from "yup"
-import type { NextPage } from "next"
+import React from 'react';
+import { Formik } from 'formik';
+import * as yup from 'yup';
+import type { NextPage } from 'next';
 
 const validationSchema = yup.object({
   email: yup
     .string()
-    .email("Enter a valid email")
-    .required("Email is required"),
+    .email('Enter a valid email')
+    .required('Email is required'),
   password: yup
     .string()
-    .min(8, "Password should be of minimum 8 characters length")
-    .required("Password is required"),
-})
+    .min(8, 'Password should be of minimum 8 characters length')
+    .required('Password is required'),
+});
 
 const initialValues = {
-  email: "foobar@example.com",
-  password: "foobar",
-}
+  email: 'foobar@example.com',
+  password: 'foobar',
+};
 
 const Tailwind: NextPage = () => {
   return (
     <div>
+      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+      <h1 className="">Hello world!</h1>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values) => {
-          console.table(values)
+          console.table(values);
         }}
       >
         {({
@@ -48,6 +50,11 @@ const Tailwind: NextPage = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.email}
+                className={`rounded border-joseph ${
+                  errors.email && touched.email && errors.email
+                    ? 'border-2 border-rose-500'
+                    : ''
+                }`}
               />
             </div>
 
@@ -62,6 +69,11 @@ const Tailwind: NextPage = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.password}
+                className={`rounded border-hashim ${
+                  errors.password && touched.password && errors.password
+                    ? 'border-2 border-rose-500'
+                    : ''
+                }`}
               />
             </div>
 
@@ -74,7 +86,7 @@ const Tailwind: NextPage = () => {
         )}
       </Formik>
     </div>
-  )
-}
+  );
+};
 
-export default Tailwind
+export default Tailwind;

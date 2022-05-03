@@ -1,10 +1,18 @@
 module.exports = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
+    './src/pages/**/*.{js,ts,jsx,tsx,html,js}',
+    './src/components/**/*.{js,ts,jsx,tsx,html,js}',
   ],
-  theme: {
-    extend: {},
+  corePlugins: {
+    preflight: false,
   },
-  plugins: [],
-}
+  theme: {
+    extend: {
+      colors: {
+        hashim: '#243c5a',
+        joseph: 'rgb(0,255,0)',
+      },
+    },
+  },
+  plugins: [require('@tailwindcss/forms')],
+};

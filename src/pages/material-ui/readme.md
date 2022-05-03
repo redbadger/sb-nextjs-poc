@@ -2,7 +2,7 @@
 
 ## Pros
 
-- Nice and easy components interfaces, specially with showin and renderin errors.
+- Nice and easy components interfaces, specially with showing and rendering errors.
 - Play along with `styled-components`
 - Gives you a good base to style from
 - Seems like there's good documentation

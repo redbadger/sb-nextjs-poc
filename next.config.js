@@ -20,4 +20,9 @@ const nextConfig = {
   },
 };
 
-module.exports = withTM(nextConfig);
+// Materialize
+// module.exports = withTM(nextConfig);
+
+// Tailwind
+const vanillaNextConfig = {};
+module.exports = vanillaNextConfig;
